@@ -35,7 +35,7 @@ class SimplexTest(unittest.TestCase):
         f = [1,-1, 2]
         self.assertRaises(ValueError, simplex.simplex, A, b, f)
     
-    def shouldDoSimplex_A1_2(self):
+    def test_shouldDoSimplex_A1_2(self):
         A = [[1,2,1,0,1,1,0,0],[0,1,1,1,1,0,1,0],[1,0,1,1,0,0,0,1]]
         b = [100,80,50]
         f = [-2,-1, -3,-1,-2,0,0,0]
@@ -57,7 +57,7 @@ class SimplexTest(unittest.TestCase):
         self.assertNpEquals(fRes, [0,0,0,5.0/3,5])
         self.assertEqual(res, 1500)
     
-    def shouldDoSimplex_Example_MatheBibel_de(self):
+    def test_shouldDoSimplex_Example_MatheBibel_de(self):
         A = [[16,6,1,0],[4,12,0,1]]
         b = [252,168]
         f = [-150,-100,0,0]

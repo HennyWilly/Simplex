@@ -39,7 +39,7 @@ def simplex(A, b, f):
         if (not smalestFIndex in possiblePivotCols):
             raise AssertionError("This should never happen: Best pivot index is not in possibleCols-Array")
         
-        #print "Best pivot column index: {}".format(np.argsort(f)[0])
+        #print("Best pivot column index: {}".format(np.argsort(f)[0]))
         return np.argsort(f)[0]
     
     def getPivotRow(A, b, pivotCol):
@@ -65,16 +65,16 @@ def simplex(A, b, f):
     checkInput(A, b, f)
     
     while(True):
-        #print "{}".format(A)
-        #print "b = {}".format(b)
-        #print "f = {}".format(f)
-        #print "res = {}".format(res)
+        #print("{}".format(A))
+        #print("b = {}".format(b))
+        #print("f = {}".format(f))
+        #print("res = {}".format(res))
         
         (row, col) = getPivotElementPosition(A, b, f)
         if (col == -1 or row == -1):
             break
         
-        #print row, col
+        #print(row, col)
         
         for i in range(len(b)):
             if (i == row):
@@ -82,13 +82,13 @@ def simplex(A, b, f):
                 A[row, :] = A[row, :] / A[row, col]
             else:
                 faktor = A[i, col] / A[row, col]
-                #print "Faktor({}) = {}/{} = {}".format(i, A[i, col], A[row, col], faktor)
+                #print("Faktor({}) = {}/{} = {}".format(i, A[i, col], A[row, col], faktor))
                 b[i] = b[i] - faktor * b[row]
                 A[i, :] = A[i, :] - faktor * A[row, :]
         
         faktor = f[col] / A[row, col]
         f = f - faktor * A[row, :]
         res = res - faktor * b[row]
-        #print "---------------------------------------------------------"
+        #print("---------------------------------------------------------")
     
     return (A, b, f, res)

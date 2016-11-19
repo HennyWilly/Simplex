@@ -1,0 +1,21 @@
+# Exercise 3.01 (Dual Simplex Algorithm)
+min. F(x1..x2)= x1 + x2
+x1 + 2x2 >= 6
+2x1 + x2 >= 6
+x1 + x2 = 4
+
+# Exercise 3.02 (Dual Simplex Algorithm)
+max. F(x1..x2)= 6x1 + 4x2
+x1 + 2x2 <= 8
+3x1 + x2 <= 9
+
+# Exercise 3.03 (Dual Simplex Algorithm)
+min. F(x1..x5)= 20x1 + 20x2 + 31x3 + 11x4 + 12x5
+x1 + x2 + x4 + 2x5 >= 21
+x2 + 2x3 + x4 + x5 >= 12
+
+# Exercise 3.04 (Simplex Algorithm)
+max. F(x1..x2)= 40x1 + 30x2
+x1 + x2 <= 8
+2x1 + x2 <= 12
+2x1 + 3x2 <= 18

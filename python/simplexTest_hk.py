@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-import simplex
+import simplex_hk
 
 class SimplexTest(unittest.TestCase):
     def assertNpEquals(self, actual, expected):

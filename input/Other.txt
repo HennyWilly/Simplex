@@ -1,0 +1,5 @@
+# Simple Example (Simplex Algorithm)
+max. F(x1..x2)= x1 + 2x2
+5x1 + 8x2 <= 700
+x1 + x2 <= 100
+x2 <= 60

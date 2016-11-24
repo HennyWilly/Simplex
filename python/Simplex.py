@@ -6,14 +6,12 @@ from LinearProblem import LinearProblem
 class Simplex:
 
     def __init__(self, linearProblem: LinearProblem):
-        self.linearProblem = linearProblem
+        self.linearProblem = linearProblem.normalize()
         self.tableau = None
         self.initTableau()
         self.printTableau()
 
     def solve(self):
-        if self.linearProblem.problemType is ProblemType.Minimize:
-            self.transformTableau()
         negative = True
         iterations = 0
         while negative is True:
@@ -54,7 +52,7 @@ class Simplex:
 
     def calcElements(self, pivotRow: int, pivotCol: int):
         # calculate elements in pivot row
-        self.tableau[pivotRow] / self.tableau[pivotRow, pivotCol]
+        self.tableau[pivotRow] = self.tableau[pivotRow] / self.tableau[pivotRow, pivotCol]
         # calculate elements except those that are in the pivot row or pivot column
         for row in range(len(self.tableau)):
             for col in range(len(self.tableau[0])):
@@ -73,5 +71,7 @@ class Simplex:
         numberOfCoeffs = self.linearProblem.targetFunction.getNumberOfCoeffs()
         col = np.argmin(self.tableau[-1, 0:numberOfCoeffs])
         indices = np.where(self.tableau[:-1, col] > 0)
-        row = np.argmin(self.tableau[indices, -1] / self.tableau[indices, col])
+        values = self.tableau[indices, -1] / self.tableau[indices, col]
+        idxMinVal = np.argmin(values)
+        row = indices[0][idxMinVal]
         return PivotElement(row, col, self.tableau[row, col])

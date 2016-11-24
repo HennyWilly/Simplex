@@ -27,14 +27,14 @@ class Simplex:
 
     def initTableau(self):
         rows = len(self.linearProblem.additionalConditions) + 1
-        numberOfCoeffs = self.linearProblem.targetFunction.numberOfCoeffs
+        numberOfCoeffs = self.linearProblem.targetFunction.getNumberOfCoeffs()
         cols = numberOfCoeffs + len(self.linearProblem.additionalConditions) + 1
         self.tableau = np.zeros((rows, cols))
         self.tableau[-1, 0:numberOfCoeffs] = self.linearProblem.targetFunction.coeffs * (-1)
         for i, additionalCondition in enumerate(self.linearProblem.additionalConditions):
             self.tableau[i, 0:numberOfCoeffs] = additionalCondition.coeffs
             self.tableau[i, numberOfCoeffs+i] = 1
-            self.tableau[i, -1] = additionalCondition.result
+            self.tableau[i, -1] = additionalCondition.rhs
 
     def transformTableau(self):
         # TODO
@@ -45,7 +45,7 @@ class Simplex:
         for row in range(len(self.tableau)):
             row_str = ''
             for col in range(len(self.tableau[0])):
-                if col == self.linearProblem.targetFunction.numberOfCoeffs:
+                if col == self.linearProblem.targetFunction.getNumberOfCoeffs():
                     row_str += '|'
                 elif col == len(self.tableau[0])-1:
                     row_str += '|'
@@ -66,11 +66,11 @@ class Simplex:
                 self.tableau[rowIndex, pivotCol] = 0
 
     def containsNegativeElements(self):
-        numberOfCoeffs = self.linearProblem.targetFunction.numberOfCoeffs
+        numberOfCoeffs = self.linearProblem.targetFunction.getNumberOfCoeffs()
         return True if len(np.where(self.tableau[-1, 0:numberOfCoeffs] < 0)[0]) > 0 else False
 
     def findPivotElement(self):
-        numberOfCoeffs = self.linearProblem.targetFunction.numberOfCoeffs
+        numberOfCoeffs = self.linearProblem.targetFunction.getNumberOfCoeffs()
         col = np.argmin(self.tableau[-1, 0:numberOfCoeffs])
         indices = np.where(self.tableau[:-1, col] > 0)
         row = np.argmin(self.tableau[indices, -1] / self.tableau[indices, col])

@@ -1,14 +1,16 @@
 import os
 
 from Simplex import Simplex
-from FileHandle import FileHandle
+from FileHandle import FileHandle, parseInputFile
 
 def main():
-    fileHandle = FileHandle()
+    currentDir = os.path.dirname(__file__)
+    inputDir = os.path.join(currentDir, '..', 'input')
+    fileHandle = FileHandle(inputDir)
     inputFiles = fileHandle.getInputFiles()
     for file in inputFiles:
         if os.path.basename(file) == 'Exercise01.txt':  # TODO: remove this line
-            linearProblems = fileHandle.parseInputFile(file)
+            linearProblems = parseInputFile(file)
             for linearProblem in linearProblems:
                 print(linearProblem)
                 simplex = Simplex(linearProblem)

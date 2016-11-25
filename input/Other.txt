@@ -1,5 +1,18 @@
-# Simple Example (Simplex Algorithm)
+# Example 01 (x1=40, x2=60, F=160)
 max. F(x1..x2)= x1 + 2x2
 5x1 + 8x2 <= 700
 x1 + x2 <= 100
 x2 <= 60
+
+# Example 02 (x1=8, x2=4, x3=0, F=28)
+max. F(x1..x3)= 3x1 + x2 + 2x3
+x1 + x2 + 3x3 <= 30
+2x1 + 2x2 + 5x3 <= 24
+4x1 + x2 + 2x3 <= 36
+
+# Example 03 (x1=0.2, x2=0.1, x3=0.1, F=18)
+max. F(x1..x3)= 15x1 + 20x2 + 130x3
+5x1 <= 2
+10x1 + 10x2 <= 3
+20x2 + 20x3 <= 4
+50x3 <= 5

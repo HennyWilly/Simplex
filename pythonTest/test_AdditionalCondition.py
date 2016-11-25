@@ -3,72 +3,47 @@ import pytest
 import env
 from python.AdditionalCondition import AdditionalCondition
 from python.Operator import Operator
-from matchers import assertNpEquals
 
 
-def test_shouldNotParseEquationStr_InvalidString():
-    condition = AdditionalCondition("abcdef", 5)
-    # TODO Should we raise an error here?
+def test_shouldNotCreateAdditionalCondition_StringPassed():
+    with pytest.raises(TypeError):
+        AdditionalCondition("F(x1..x5) = 10x1 -20x2 + 30x3 -40x4 + 50x5")
 
 
-def test_shouldNotParseEquationStr_MultipleOperators():
-    condition = AdditionalCondition("1x1 - 2x2 + 3x3 - 4x4 <= 100 <= 200", 4)
-    # TODO Should we raise an error here?
+def test_shouldCreateAdditionalCondition_SmallerThan():
+    condition = AdditionalCondition([1, -2, 3, -4], Operator.SmallerThan, 100)
+    assert condition.getNumberOfCoeffs() == 4
+    assert str(condition) == "1x1 -2x2 + 3x3 -4x4 <= 100"
 
 
-def test_shouldParseCoeffs():
-    condition = AdditionalCondition("1x1 - 2x2 + 3x3 - 4x4 <= 100", 4)
-    assertNpEquals(condition.coeffs, [1, -2, 3, -4])
+def test_shouldCreateAdditionalCondition_Smaller():
+    condition = AdditionalCondition([1, -2, 3, -4], Operator.Smaller, 100)
+    assert condition.getNumberOfCoeffs() == 4
+    assert str(condition) == "1x1 -2x2 + 3x3 -4x4 < 100"
 
 
-def test_shouldParseCoeffs_MoreCoeffsInStringThanPassed():
-    condition = AdditionalCondition("5x1 - 2x2 + x5 <= 100", 3)
-    assertNpEquals(condition.coeffs, [5, -2, 0])
+def test_shouldCreateAdditionalCondition_GreaterThan():
+    condition = AdditionalCondition([1, -2, 3, -4], Operator.GreaterThan, 100)
+    assert condition.getNumberOfCoeffs() == 4
+    assert str(condition) == "1x1 -2x2 + 3x3 -4x4 >= 100"
 
 
-def test_shouldParseCoeffs_LessCoeffsInStringThanPassed():
-    condition = AdditionalCondition("5x1 - 2x2 <= 100", 5)
-    assertNpEquals(condition.coeffs, [5, -2, 0, 0, 0])
+def test_shouldCreateAdditionalCondition_Greater():
+    condition = AdditionalCondition([1, -2, 3, -4], Operator.Greater, 100)
+    assert condition.getNumberOfCoeffs() == 4
+    assert str(condition) == "1x1 -2x2 + 3x3 -4x4 > 100"
 
 
-def test_shouldParseOperator_SmallerThan():
-    condition = AdditionalCondition("x1 <= 100", 1)
-    assert condition.operator is Operator.SmallerThan
+def test_shouldCreateAdditionalCondition_Equals():
+    condition = AdditionalCondition([1, -2, 3, -4], Operator.Equals, 100)
+    assert condition.getNumberOfCoeffs() == 4
+    assert str(condition) == "1x1 -2x2 + 3x3 -4x4 = 100"
 
 
-def test_shouldParseOperator_Smaller():
-    condition = AdditionalCondition("x1 < 100", 1)
-    assert condition.operator is Operator.Smaller
-
-
-def test_shouldParseOperator_GreaterThan():
-    condition = AdditionalCondition("x1 >= 100", 1)
-    assert condition.operator is Operator.GreaterThan
-
-
-def test_shouldParseOperator_Greater():
-    condition = AdditionalCondition("x1 > 100", 1)
-    assert condition.operator is Operator.Greater
-
-
-def test_shouldParseOperator_Equals():
-    condition = AdditionalCondition("x1 = 100", 1)
-    assert condition.operator is Operator.Equals
-
-
-def test_shouldParseOperator_UnknownOperator():
-    condition = AdditionalCondition("x1 ? 100", 1)
-    assert condition.operator is Operator.Unknown
-
-
-def test_shouldParseRhs():
-    condition = AdditionalCondition("x1 <= 100", 1)
-    assert condition.result == 100
-
-
-def test_shouldNotParseRhs_UnknownOperator():
-    condition = AdditionalCondition("x1 ? 100", 1)
-    assert condition.result == 0
+def test_shouldCreateAdditionalCondition_UnknownOperator():
+    condition = AdditionalCondition([1, -2, 3, -4], Operator.Unknown, 100)
+    assert condition.getNumberOfCoeffs() == 4
+    assert str(condition) == "1x1 -2x2 + 3x3 -4x4 <Operator.Unknown> 100"
 
 
 if __name__ == "__main__":

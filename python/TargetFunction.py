@@ -3,7 +3,7 @@ import numpy as np
 class TargetFunction:
 
     def __init__(self, coeffs: np.array):
-        self.coeffs = coeffs
+        self.coeffs = np.array(coeffs)
 
     def getNumberOfCoeffs(self):
         return len(self.coeffs)
@@ -13,6 +13,6 @@ class TargetFunction:
         for i, val in enumerate(self.coeffs):
             valInt = int(val)
             if i > 0 and valInt >= 0:
-                    ret += '+ '
+                ret += '+ '
             ret += '{:d}x{:d} '.format(valInt, i + 1)
         return ret

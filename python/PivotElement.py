@@ -1,6 +1,4 @@
-
 class PivotElement:
-
     def __init__(self, row: int, col: int, value: float):
         if row < 0:
             raise ValueError("Invalid value of row: {:d}".format(row))

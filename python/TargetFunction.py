@@ -1,7 +1,7 @@
 import numpy as np
 
-class TargetFunction:
 
+class TargetFunction:
     def __init__(self, coeffs: np.array):
         self.coeffs = np.array(coeffs)
 

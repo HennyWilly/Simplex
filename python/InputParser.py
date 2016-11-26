@@ -1,14 +1,25 @@
 import re
 import numpy as np
-from Operator import Operator
-from ProblemType import ProblemType
-from LinearProblem import LinearProblem
-from TargetFunction import TargetFunction
-from AdditionalCondition import AdditionalCondition
+
+try:
+    from .Operator import Operator
+    from .ProblemType import ProblemType
+    from .LinearProblem import LinearProblem
+    from .TargetFunction import TargetFunction
+    from .AdditionalCondition import AdditionalCondition
+except SystemError:
+    from Operator import Operator
+    from ProblemType import ProblemType
+    from LinearProblem import LinearProblem
+    from TargetFunction import TargetFunction
+    from AdditionalCondition import AdditionalCondition
+
 
 def parseLines(lines: [str]):
     linearProblems = []
-    indices = [lines.index(line) for line in lines if (not line.startswith('#') and (str(ProblemType.Minimize) in line or str(ProblemType.Maximize) in line))]
+    lines = [line.strip() for line in lines]
+    indices = [lines.index(line) for line in lines if
+               (not line.startswith('#') and (str(ProblemType.Minimize) in line or str(ProblemType.Maximize) in line))]
     for idx in indices:
         currentLine = lines[idx]
         description = lines[idx - 1].strip().replace('\n', '')
@@ -18,7 +29,9 @@ def parseLines(lines: [str]):
         additionalConditions = []
         j = 1
         line = lines[idx + 1]
-        while line not in ['\n', '\r\n']:
+
+        # TODO Check if we already reached the next index
+        while line not in ['\n', '\r\n', '']:
             additionalCondition = parseAdditionalConditionStr(line, numberOfCoeffs)
             additionalConditions.append(additionalCondition)
             j += 1
@@ -31,6 +44,7 @@ def parseLines(lines: [str]):
             linearProblems.append(lp)
     return linearProblems
 
+
 def parseAdditionalConditionStr(additionalConditionStr: str, numberOfCoeffs: int):
     additionalConditionStr = additionalConditionStr.strip().replace(' ', '').replace('\n', '')
     coeffs = parseCoeffs(additionalConditionStr, numberOfCoeffs)
@@ -38,12 +52,14 @@ def parseAdditionalConditionStr(additionalConditionStr: str, numberOfCoeffs: int
     rhs = parseRhs(additionalConditionStr, operator)
     return AdditionalCondition(coeffs, operator, rhs)
 
+
 def parseTargetFunctionStr(targetFunctionStr: str):
     targetFunctionStr = targetFunctionStr.strip().replace(' ', '').replace('\n', '')
     numberOfCoeffs = parseNumberOfCoeffs(targetFunctionStr)
     splittedStr = targetFunctionStr.split('=')[-1]
     coeffs = parseCoeffs(splittedStr, numberOfCoeffs)
     return TargetFunction(coeffs)
+
 
 def parseCoeffs(equationStr: str, numberOfCoeffs):
     coeffs = np.zeros(numberOfCoeffs)
@@ -62,6 +78,7 @@ def parseCoeffs(equationStr: str, numberOfCoeffs):
             coeffs[idx] = val
     return coeffs
 
+
 def parseNumberOfCoeffs(equationStr: str):
     numberOfCoeffs = 0
     regexPattern = re.compile('F\(x\d\.\.x\d\)')
@@ -69,8 +86,16 @@ def parseNumberOfCoeffs(equationStr: str):
     if match != None:
         regexPattern = re.compile('x\d')
         matches = regexPattern.findall(match.group(0))
-        numberOfCoeffs = int(matches[-1].replace('x', ''))
+
+        lowerBound = int(matches[0].replace('x', ''))
+        upperBound = int(matches[1].replace('x', ''))
+
+        if lowerBound > upperBound:
+            raise ValueError("Lower bound {} is bigger than upper bound {}".format(lowerBound, upperBound))
+
+        numberOfCoeffs = upperBound - lowerBound + 1
     return numberOfCoeffs
+
 
 def parseOperator(equationStr: str):
     operator = Operator.Unknown
@@ -85,6 +110,7 @@ def parseOperator(equationStr: str):
     elif equationStr.find('=') > -1:
         operator = Operator.Equals
     return operator
+
 
 def parseRhs(equationStr: str, operator: Operator):
     result = 0

@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class ProblemType(Enum):
     Minimize = 'min.'
     Maximize = 'max.'

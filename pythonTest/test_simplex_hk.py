@@ -4,6 +4,7 @@ import env
 from python.simplex_hk import simplex
 from matchers import assertNpEquals
 
+
 def test_shouldNotDoSimplex_fNotHasEnoughEntries():
     A = [1, 2, 3]
     b = [1]

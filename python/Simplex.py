@@ -1,13 +1,20 @@
 import numpy as np
-from ProblemType import ProblemType
-from PivotElement import PivotElement
-from LinearProblem import LinearProblem
+
+try:
+    from .ProblemType import ProblemType
+    from .PivotElement import PivotElement
+    from .LinearProblem import LinearProblem
+except SystemError:
+    from ProblemType import ProblemType
+    from PivotElement import PivotElement
+    from LinearProblem import LinearProblem
+
 
 class Simplex:
-
     def __init__(self, linearProblem: LinearProblem):
         self.linearProblem = linearProblem.normalize()
         self.tableau = None
+        self.variables = None
         self.initTableau()
         self.printTableau()
 
@@ -18,10 +25,17 @@ class Simplex:
             iterations += 1
             pivotElement = self.findPivotElement()
             print(pivotElement)
-            self.calcElements(pivotElement.row, pivotElement.col)
+            self.calcElements(pivotElement)
             self.printTableau()
             negative = self.containsNegativeElements()
         print('F(x_i) = {:.2f} (Iterations={:d})'.format(self.tableau[-1, -1], iterations))
+
+        # Generating result
+        b = self.tableau[:-1, -1]
+        x = np.zeros(self.tableau.shape[1] - 1)
+        for resIdx, varIdx in enumerate(self.variables):
+            x[varIdx] = b[resIdx]
+        return x, self.tableau[-1, -1]
 
     def initTableau(self):
         rows = len(self.linearProblem.additionalConditions) + 1
@@ -31,8 +45,9 @@ class Simplex:
         self.tableau[-1, 0:numberOfCoeffs] = self.linearProblem.targetFunction.coeffs * (-1)
         for i, additionalCondition in enumerate(self.linearProblem.additionalConditions):
             self.tableau[i, 0:numberOfCoeffs] = additionalCondition.coeffs
-            self.tableau[i, numberOfCoeffs+i] = 1
+            self.tableau[i, numberOfCoeffs + i] = 1
             self.tableau[i, -1] = additionalCondition.rhs
+        self.variables = np.array(range(numberOfCoeffs + 1, cols))
 
     def transformTableau(self):
         # TODO
@@ -45,19 +60,24 @@ class Simplex:
             for col in range(len(self.tableau[0])):
                 if col == self.linearProblem.targetFunction.getNumberOfCoeffs():
                     row_str += '|'
-                elif col == len(self.tableau[0])-1:
+                elif col == len(self.tableau[0]) - 1:
                     row_str += '|'
                 row_str += '{:8.2f}\t'.format(self.tableau[row, col])
             print(row_str)
 
-    def calcElements(self, pivotRow: int, pivotCol: int):
+    def calcElements(self, pivot: PivotElement):
+        pivotRow = pivot.row
+        pivotCol = pivot.col
+        self.variables[pivotRow] = pivotCol
+
         # calculate elements in pivot row
         self.tableau[pivotRow] = self.tableau[pivotRow] / self.tableau[pivotRow, pivotCol]
         # calculate elements except those that are in the pivot row or pivot column
         for row in range(len(self.tableau)):
             for col in range(len(self.tableau[0])):
                 if row != pivotRow and col != pivotCol:
-                    self.tableau[row, col] = self.tableau[row, col] - (self.tableau[row, pivotCol]*self.tableau[pivotRow, col])
+                    self.tableau[row, col] = self.tableau[row, col] - (
+                        self.tableau[row, pivotCol] * self.tableau[pivotRow, col])
         # set elements to 0 except the pivot element
         for rowIndex in range(len(self.tableau)):
             if rowIndex != pivotRow:

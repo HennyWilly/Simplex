@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 try:
     from .ProblemType import ProblemType
@@ -19,6 +20,8 @@ class Simplex:
         self.printTableau()
 
     def solve(self):
+        start = time.perf_counter()
+
         negative = True
         iterations = 0
         while negative is True:
@@ -35,6 +38,10 @@ class Simplex:
         x = np.zeros(self.tableau.shape[1] - 1)
         for resIdx, varIdx in enumerate(self.variables):
             x[varIdx] = b[resIdx]
+
+        timeInSec = time.perf_counter() - start
+        print("Execution time: {} ms".format(timeInSec * 1000))
+
         return x, self.tableau[-1, -1]
 
     def initTableau(self):

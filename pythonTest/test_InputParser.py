@@ -1,7 +1,8 @@
 import pytest
-from matchers import assertNpEquals
 
 import env
+from pythonTest.matchers import assertNpEquals
+
 from python.InputParser import parseLines, parseAdditionalConditionStr, parseTargetFunctionStr, parseCoeffs, \
     parseNumberOfCoeffs, parseOperator, parseRhs
 from python.ProblemType import ProblemType

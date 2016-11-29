@@ -1,14 +1,8 @@
 import numpy as np
 import time
 
-try:
-    from .ProblemType import ProblemType
-    from .PivotElement import PivotElement
-    from .LinearProblem import LinearProblem
-except SystemError:
-    from ProblemType import ProblemType
-    from PivotElement import PivotElement
-    from LinearProblem import LinearProblem
+from python.PivotElement import PivotElement
+from python.LinearProblem import LinearProblem
 
 
 class Simplex:

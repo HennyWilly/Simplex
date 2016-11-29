@@ -1,9 +1,6 @@
 import numpy as np
 
-try:
-    from .Operator import Operator
-except SystemError:
-    from Operator import Operator
+from python.Operator import Operator
 
 
 class AdditionalCondition:

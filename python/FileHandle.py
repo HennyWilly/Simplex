@@ -1,10 +1,7 @@
-import os
 import glob
+import os
 
-try:
-    from .InputParser import parseLines, parseAdditionalConditionStr, parseTargetFunctionStr
-except SystemError:
-    from InputParser import parseLines, parseAdditionalConditionStr, parseTargetFunctionStr
+from python.InputParser import parseLines
 
 
 class FileHandle:

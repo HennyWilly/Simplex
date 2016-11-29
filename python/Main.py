@@ -1,7 +1,8 @@
 import os
 
-from Simplex import Simplex
-from FileHandle import FileHandle
+import env
+from python.Simplex import Simplex
+from python.FileHandle import FileHandle
 
 
 def main():

@@ -1,13 +1,7 @@
-try:
-    from .Operator import Operator
-    from .ProblemType import ProblemType
-    from .TargetFunction import TargetFunction
-    from .AdditionalCondition import AdditionalCondition
-except SystemError:
-    from Operator import Operator
-    from ProblemType import ProblemType
-    from TargetFunction import TargetFunction
-    from AdditionalCondition import AdditionalCondition
+from python.Operator import Operator
+from python.ProblemType import ProblemType
+from python.TargetFunction import TargetFunction
+from python.AdditionalCondition import AdditionalCondition
 
 
 class LinearProblem:

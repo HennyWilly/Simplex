@@ -1,9 +1,9 @@
 import pytest
 
-import env
+import pythonTest.env
+from pythonTest.matchers import assertNpEquals
+
 from python.TargetFunction import TargetFunction
-from python.Operator import Operator
-from matchers import assertNpEquals
 
 
 def test_shouldNotCreateTargetFunction_StringPassed():

@@ -1,7 +1,8 @@
 import pytest
-from matchers import assertNpEquals
 
 import env
+from pythonTest.matchers import assertNpEquals
+
 from python.AdditionalCondition import AdditionalCondition
 from python.Operator import Operator
 from python.LinearProblem import LinearProblem

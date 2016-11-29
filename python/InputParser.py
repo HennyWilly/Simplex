@@ -1,18 +1,11 @@
 import re
 import numpy as np
 
-try:
-    from .Operator import Operator
-    from .ProblemType import ProblemType
-    from .LinearProblem import LinearProblem
-    from .TargetFunction import TargetFunction
-    from .AdditionalCondition import AdditionalCondition
-except SystemError:
-    from Operator import Operator
-    from ProblemType import ProblemType
-    from LinearProblem import LinearProblem
-    from TargetFunction import TargetFunction
-    from AdditionalCondition import AdditionalCondition
+from python.Operator import Operator
+from python.ProblemType import ProblemType
+from python.LinearProblem import LinearProblem
+from python.TargetFunction import TargetFunction
+from python.AdditionalCondition import AdditionalCondition
 
 
 def parseLines(lines: [str]):

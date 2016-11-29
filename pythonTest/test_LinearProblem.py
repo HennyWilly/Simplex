@@ -1,7 +1,8 @@
 import pytest
-from matchers import assertNpEquals
 
 import env
+from pythonTest.matchers import assertNpEquals
+
 from python.ProblemType import ProblemType
 from python.TargetFunction import TargetFunction
 from python.Operator import Operator

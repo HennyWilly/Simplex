@@ -8,7 +8,7 @@ from python.Operator import Operator
 from python.LinearProblem import LinearProblem
 from python.TargetFunction import TargetFunction
 from python.ProblemType import ProblemType
-from python.Simplex import Simplex
+from python.PrimalSimplex import PrimalSimplex
 
 
 def test_shouldDoSimplex_A1_2():
@@ -17,7 +17,7 @@ def test_shouldDoSimplex_A1_2():
     ac2 = AdditionalCondition([0, 1, 1, 1, 1], Operator.SmallerThan, 80)
     ac3 = AdditionalCondition([1, 0, 1, 1, 0], Operator.SmallerThan, 50)
     lp = LinearProblem("A1_2", ProblemType.Maximize, tf, [ac1, ac2, ac3])
-    simplex = Simplex(lp)
+    simplex = PrimalSimplex(lp)
     (x, F) = simplex.solve()
 
     assertNpEquals(x, [20, 0, 30, 0, 50, 0, 0, 0])
@@ -30,7 +30,7 @@ def test_shouldDoSimplex_A1_3():
     ac2 = AdditionalCondition([6, 9], Operator.SmallerThan, 720)
     ac3 = AdditionalCondition([0, 1], Operator.SmallerThan, 60)
     lp = LinearProblem("A1_3", ProblemType.Maximize, tf, [ac1, ac2, ac3])
-    simplex = Simplex(lp)
+    simplex = PrimalSimplex(lp)
     (x, F) = simplex.solve()
 
     assertNpEquals(x, [30, 60, 0, 10, 0])
@@ -42,7 +42,7 @@ def test_shouldDoSimplex_Example_MatheBibel_de():
     ac1 = AdditionalCondition([16, 6], Operator.SmallerThan, 252)
     ac2 = AdditionalCondition([4, 12], Operator.SmallerThan, 168)
     lp = LinearProblem("MatheBibel", ProblemType.Maximize, tf, [ac1, ac2])
-    simplex = Simplex(lp)
+    simplex = PrimalSimplex(lp)
     (x, F) = simplex.solve()
 
     assertNpEquals(x, [12, 10, 0, 0])

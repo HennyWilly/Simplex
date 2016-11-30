@@ -1,7 +1,7 @@
 import os
 
 import env
-from python.Simplex import Simplex
+from python.PrimalSimplex import PrimalSimplex
 from python.FileHandle import FileHandle
 
 
@@ -15,8 +15,8 @@ def main():
             linearProblems = FileHandle.parseInputFile(file)
             for linearProblem in linearProblems:
                 print(linearProblem)
-                simplex = Simplex(linearProblem)
-                simplex.solve()
+                primalSimplex = PrimalSimplex(linearProblem)
+                primalSimplex.solve()
                 print('')
 
 

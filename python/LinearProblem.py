@@ -1,3 +1,5 @@
+import numpy as np
+
 from python.Operator import Operator
 from python.ProblemType import ProblemType
 from python.TargetFunction import TargetFunction
@@ -29,6 +31,15 @@ class LinearProblem:
             targetFunctionCoeffs *= -1
         return LinearProblem(self.description, ProblemType.Maximize, TargetFunction(targetFunctionCoeffs),
                              additionalConditions)
+
+    def isValidSolution(self, solution: np.array):
+        isValid = False
+        if len(solution) == len(self.targetFunction.getNumberOfCoeffs()):
+            for additionalCondition in self.additionalConditions:
+                isValid = additionalCondition.isValidSolution(solution)
+                if not isValid:
+                    break
+        return isValid
 
     def __str__(self):
         ret = '{:s}\n{:s} {:s}\n'.format(self.description, self.problemType, str(self.targetFunction))

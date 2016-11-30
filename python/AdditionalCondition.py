@@ -12,6 +12,22 @@ class AdditionalCondition:
     def getNumberOfCoeffs(self):
         return len(self.coeffs)
 
+    def isValidSolution(self, solution: np.array):
+        solution = np.array(solution)
+        isValid = False
+        lhs = np.sum(self.coeffs * solution)
+        if self.operator is Operator.Smaller:
+            isValid = (lhs < self.rhs)
+        elif self.operator is Operator.SmallerThan:
+            isValid = (lhs <= self.rhs)
+        elif self.operator is Operator.Greater:
+            isValid = (lhs > self.rhs)
+        elif self.operator is Operator.GreaterThan:
+            isValid = (lhs >= self.rhs)
+        elif self.operator is Operator.Equals:
+            isValid = (lhs == self.rhs)
+        return isValid
+
     def __str__(self):
         ret = ''
         for i, val in enumerate(self.coeffs):

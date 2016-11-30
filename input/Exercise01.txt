@@ -4,15 +4,15 @@
 #-x1 + 2x2 >= 2
 
 # Exercise 1.01 b) 
-#max. F(x1..x2)= 2x1 + x2
-#-x1 + x2 <= 1
-#x1 + 3x2 >= 6
-
-# Exercise 1.01 b) 
 #max. F(x1..x2)= x1 - x2
 #2x1 - x2 <= 0
 #x1 + 2x2 <= 1
 #2x1 + x2 >= 2
+
+# Exercise 1.01 c)
+#max. F(x1..x2)= 2x1 + x2
+#-x1 + x2 <= 1
+#x1 + 3x2 >= 6
 
 # Exercise 1.02 (Simplex Algorithm)
 max. F(x1..x5)= 2x1 + x2 + 3x3 + x4 + 2x5

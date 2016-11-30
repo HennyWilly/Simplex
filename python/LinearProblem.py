@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 from python.Operator import Operator
 from python.ProblemType import ProblemType
@@ -40,6 +41,19 @@ class LinearProblem:
                 if not isValid:
                     break
         return isValid
+
+    def plot(self):
+        if self.targetFunction.getNumberOfCoeffs() is 2:
+            maxRhs = np.amax([additionalCondition.rhs for additionalCondition in self.additionalConditions])
+            for additionalCondition in self.additionalConditions:
+                x = np.linspace(0, maxRhs, 2)
+                y = [(additionalCondition.rhs-(additionalCondition.coeffs[0]*x_i))/additionalCondition.coeffs[1] for x_i in x]
+                plt.plot(x, y, label=str(additionalCondition))
+            plt.axis('equal')
+            plt.legend()
+            plt.xlim(0, maxRhs)
+            plt.ylim(0, maxRhs)
+            plt.show()
 
     def __str__(self):
         ret = '{:s}\n{:s} {:s}\n'.format(self.description, self.problemType, str(self.targetFunction))

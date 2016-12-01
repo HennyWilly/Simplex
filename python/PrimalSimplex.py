@@ -27,10 +27,7 @@ class PrimalSimplex(Simplex):
         print('F(x_i) = {:.2f} (Iterations={:d})'.format(self.tableau[-1, -1], iterations))
 
         # Generating result
-        b = self.tableau[:-1, -1]
-        x = np.zeros(self.tableau.shape[1] - 1)
-        for resIdx, varIdx in enumerate(self.variables):
-            x[varIdx] = b[resIdx]
+        x = self.getResult()
 
         timeInSec = time.perf_counter() - start
         print("Execution time: {} ms".format(timeInSec * 1000))
@@ -66,3 +63,14 @@ class PrimalSimplex(Simplex):
         idxMinVal = np.argmin(values)
         row = indices[0][idxMinVal]
         return PivotElement(row, col, self.tableau[row, col])
+
+    def isSolvable(self):
+        # The LP can not be solved if there is at least one b_i < 0
+        return False if len(np.where(self.tableau[:, -1] < 0)[0]) > 0 else True
+
+    def getResult(self):
+        b = self.tableau[:-1, -1]
+        x = np.zeros(self.tableau.shape[1] - 1)
+        for resIdx, varIdx in enumerate(self.variables):
+            x[varIdx] = b[resIdx]
+        return x

@@ -20,7 +20,7 @@ def test_shouldParseFile():
     lps = FileHandle.parseInputFile(path)
 
     # We don't need to check the lps here, because this is the job of "test_InputParser.py"
-    assert len(lps) == 2
+    assert len(lps) == 5
 
 
 if __name__ == "__main__":

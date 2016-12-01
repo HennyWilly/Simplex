@@ -1,4 +1,5 @@
 import os
+import time
 
 import env
 from python.PrimalSimplex import PrimalSimplex
@@ -15,8 +16,15 @@ def main():
             linearProblems = FileHandle.parseInputFile(file)
             for linearProblem in linearProblems:
                 print(linearProblem)
+                # linearProblem.plot()  # Uncomment this line to plot the LP
                 primalSimplex = PrimalSimplex(linearProblem)
-                primalSimplex.solve()
+                if primalSimplex.isSolvable():
+                    start = time.perf_counter()
+                    primalSimplex.solve()
+                    timeInSec = time.perf_counter() - start
+                    print("Execution time: {} ms".format(timeInSec * 1000))
+                else:
+                    print('Can not solve LP with the primal simplex algorithm!')
                 print('')
 
 

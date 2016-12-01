@@ -1,4 +1,3 @@
-import time
 import numpy as np
 
 from python.Simplex import Simplex
@@ -11,10 +10,9 @@ class PrimalSimplex(Simplex):
     def __init__(self, linearProblem: LinearProblem):
         super().__init__(linearProblem.normalize())
         self.initTableau()
-        self.printTableau()
 
     def solve(self):
-        start = time.perf_counter()
+        self.printTableau()
 
         iterations = 0
         pivotElement = None
@@ -28,9 +26,6 @@ class PrimalSimplex(Simplex):
 
         # Generating result
         x = self.getResult()
-
-        timeInSec = time.perf_counter() - start
-        print("Execution time: {} ms".format(timeInSec * 1000))
 
         return x, self.tableau[-1, -1]
 

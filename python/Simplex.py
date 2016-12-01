@@ -7,7 +7,7 @@ from python.LinearProblem import LinearProblem
 class Simplex(metaclass=ABCMeta):
 
     def __init__(self, linearProblem: LinearProblem):
-        self.linearProblem = linearProblem.normalize()
+        self.linearProblem = linearProblem
         self.tableau = None
         self.variables = None
 

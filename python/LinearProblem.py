@@ -35,7 +35,7 @@ class LinearProblem:
 
     def isValidSolution(self, solution: np.array):
         isValid = False
-        if len(solution) == len(self.targetFunction.getNumberOfCoeffs()):
+        if len(solution) == self.targetFunction.getNumberOfCoeffs():
             for additionalCondition in self.additionalConditions:
                 isValid = additionalCondition.isValidSolution(solution)
                 if not isValid:

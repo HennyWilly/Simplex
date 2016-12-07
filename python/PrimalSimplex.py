@@ -62,7 +62,7 @@ class PrimalSimplex(Simplex):
 
     def isSolvable(self):
         # The LP can not be solved if there is at least one b_i < 0
-        return False if len(np.where(self.tableau[:, -1] < 0)[0]) > 0 else True
+        return False if len(np.where(self.tableau[:-1, -1] < 0)[0]) > 0 else True
 
     def getResult(self):
         b = self.tableau[:-1, -1]

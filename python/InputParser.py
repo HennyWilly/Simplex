@@ -51,7 +51,8 @@ def parseTargetFunctionStr(targetFunctionStr: str):
     numberOfCoeffs = parseNumberOfCoeffs(targetFunctionStr)
     splittedStr = targetFunctionStr.split('=')[-1]
     coeffs = parseCoeffs(splittedStr, numberOfCoeffs)
-    return TargetFunction(coeffs)
+    constant = parseConstant(splittedStr)
+    return TargetFunction(coeffs, constant)
 
 
 def parseCoeffs(equationStr: str, numberOfCoeffs):
@@ -70,6 +71,15 @@ def parseCoeffs(equationStr: str, numberOfCoeffs):
         if 0 <= idx < numberOfCoeffs:
             coeffs[idx] = val
     return coeffs
+
+
+def parseConstant(equationStr: str):
+    constant = 0
+    regexPattern = re.compile('(?<!x)([-]?\d+)(?!x\d+)')
+    matches = regexPattern.findall(equationStr)
+    for match in matches:
+        constant += int(match)
+    return constant
 
 
 def parseNumberOfCoeffs(equationStr: str):

@@ -35,6 +35,7 @@ class PrimalSimplex(Simplex):
         cols = numberOfCoeffs + len(self.linearProblem.additionalConditions) + 1
         self.tableau = np.zeros((rows, cols))
         self.tableau[-1, 0:numberOfCoeffs] = self.linearProblem.targetFunction.coeffs * (-1)
+        self.tableau[-1, -1] = self.linearProblem.targetFunction.constant
         for i, additionalCondition in enumerate(self.linearProblem.additionalConditions):
             self.tableau[i, 0:numberOfCoeffs] = additionalCondition.coeffs
             self.tableau[i, numberOfCoeffs + i] = 1

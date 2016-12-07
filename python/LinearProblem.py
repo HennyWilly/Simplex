@@ -17,6 +17,7 @@ class LinearProblem:
 
     def normalize(self):
         targetFunctionCoeffs = self.targetFunction.coeffs
+        targetFunctionConstant = self.targetFunction.constant
         additionalConditions = []
         for ac in self.additionalConditions:
             if ac.operator is Operator.Equals:
@@ -30,7 +31,8 @@ class LinearProblem:
                 additionalConditions.append(ac)
         if self.problemType is ProblemType.Minimize:
             targetFunctionCoeffs *= -1
-        return LinearProblem(self.description, ProblemType.Maximize, TargetFunction(targetFunctionCoeffs),
+            targetFunctionConstant *= -1
+        return LinearProblem(self.description, ProblemType.Maximize, TargetFunction(targetFunctionCoeffs, targetFunctionConstant),
                              additionalConditions)
 
     def isValidSolution(self, solution: np.array):

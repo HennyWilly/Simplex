@@ -11,7 +11,7 @@ def test_shouldGetInputFiles():
     path = os.path.join(dir_path, '..', 'input')
     fileHandle = FileHandle(path)
     files = fileHandle.getInputFiles()
-    assert len(files) == 4
+    assert len(files) == 5
 
 
 def test_shouldParseFile():

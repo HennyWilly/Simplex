@@ -16,24 +16,23 @@ class LinearProblem:
         self.additionalConditions = additionalConditions
 
     def normalize(self):
-        targetFunctionCoeffs = self.targetFunction.coeffs
-        targetFunctionConstant = self.targetFunction.constant
+        if self.problemType is ProblemType.Minimize:
+            self.problemType = ProblemType.Maximize
+            self.targetFunction.changeSign()
         additionalConditions = []
         for ac in self.additionalConditions:
             if ac.operator is Operator.Equals:
                 ac1 = AdditionalCondition(ac.coeffs, Operator.SmallerThan, ac.rhs)
-                ac2 = AdditionalCondition(-1 * ac.coeffs, Operator.SmallerThan, -1 * ac.rhs)
+                ac2 = AdditionalCondition(ac.coeffs, Operator.GreaterThan, ac.rhs)
+                ac2.changeSign()
                 additionalConditions.append(ac1)
                 additionalConditions.append(ac2)
-            elif ac.operator is Operator.GreaterThan:
-                additionalConditions.append(AdditionalCondition(-1 * ac.coeffs, Operator.SmallerThan, -1 * ac.rhs))
+            elif ac.operator is Operator.Greater or ac.operator is Operator.GreaterThan:
+                ac.changeSign()
+                additionalConditions.append(ac)
             else:
                 additionalConditions.append(ac)
-        if self.problemType is ProblemType.Minimize:
-            targetFunctionCoeffs *= -1
-            targetFunctionConstant *= -1
-        return LinearProblem(self.description, ProblemType.Maximize, TargetFunction(targetFunctionCoeffs, targetFunctionConstant),
-                             additionalConditions)
+        self.additionalConditions = additionalConditions
 
     def isValidSolution(self, solution: np.array):
         isValid = False

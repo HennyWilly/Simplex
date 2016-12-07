@@ -12,6 +12,18 @@ class AdditionalCondition:
     def getNumberOfCoeffs(self):
         return len(self.coeffs)
 
+    def changeSign(self):
+        self.coeffs *= -1
+        self.rhs *= -1
+        if self.operator is Operator.Smaller:
+            self.operator = Operator.Greater
+        elif self.operator is Operator.SmallerThan:
+            self.operator = Operator.GreaterThan
+        elif self.operator is Operator.Greater:
+            self.operator = Operator.Smaller
+        elif self.operator is Operator.GreaterThan:
+            self.operator = Operator.SmallerThan
+
     def isValidSolution(self, solution: np.array):
         solution = np.array(solution)
         isValid = False

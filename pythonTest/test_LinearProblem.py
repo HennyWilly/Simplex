@@ -26,12 +26,9 @@ def test_shouldNormalizeTargetFunction_MinimalizeProblem():
     tf = TargetFunction([1, -2, 3, -4])
     lp = LinearProblem("Test", pt, tf, [])
 
-    normalized = lp.normalize()
-    assert normalized.problemType == ProblemType.Maximize
-    assertNpEquals(normalized.targetFunction.coeffs, [-1, 2, -3, 4])
-
-    # Test if we work on a copy
-    assert lp.targetFunction.coeffs is not normalized.targetFunction.coeffs
+    lp.normalize()
+    assert lp.problemType == ProblemType.Maximize
+    assertNpEquals(lp.targetFunction.coeffs, [-1, 2, -3, 4])
 
 
 def test_shouldNormalizeTargetFunction_MaximizeProblem():
@@ -39,9 +36,9 @@ def test_shouldNormalizeTargetFunction_MaximizeProblem():
     tf = TargetFunction([1, -2, 3, -4])
     lp = LinearProblem("Test", pt, tf, [])
 
-    normalized = lp.normalize()
-    assert normalized.problemType == ProblemType.Maximize
-    assertNpEquals(normalized.targetFunction.coeffs, [1, -2, 3, -4])
+    lp.normalize()
+    assert lp.problemType == ProblemType.Maximize
+    assertNpEquals(lp.targetFunction.coeffs, [1, -2, 3, -4])
 
 
 def test_shouldNormalizeAdditionalCondition_SmallerThan():
@@ -50,10 +47,10 @@ def test_shouldNormalizeAdditionalCondition_SmallerThan():
     acs = [AdditionalCondition([-1, 2, -3], Operator.SmallerThan, 10.5)]
     lp = LinearProblem("Test", pt, tf, acs)
 
-    normalized = lp.normalize()
-    assert len(normalized.additionalConditions) == 1
+    lp.normalize()
+    assert len(lp.additionalConditions) == 1
 
-    nAc = normalized.additionalConditions[0]
+    nAc = lp.additionalConditions[0]
     assertNpEquals(nAc.coeffs, [-1, 2, -3])
     assert nAc.operator == Operator.SmallerThan
     assert nAc.rhs == 10.5
@@ -65,10 +62,10 @@ def test_shouldNormalizeAdditionalCondition_GreaterThan():
     acs = [AdditionalCondition([-1, 2, -3], Operator.GreaterThan, 10.5)]
     lp = LinearProblem("Test", pt, tf, acs)
 
-    normalized = lp.normalize()
-    assert len(normalized.additionalConditions) == 1
+    lp.normalize()
+    assert len(lp.additionalConditions) == 1
 
-    nAc = normalized.additionalConditions[0]
+    nAc = lp.additionalConditions[0]
     assertNpEquals(nAc.coeffs, [1, -2, 3])
     assert nAc.operator == Operator.SmallerThan
     assert nAc.rhs == -10.5
@@ -80,15 +77,15 @@ def test_shouldNormalizeAdditionalCondition_Equals():
     acs = [AdditionalCondition([-1, 2, -3], Operator.Equals, 10.5)]
     lp = LinearProblem("Test", pt, tf, acs)
 
-    normalized = lp.normalize()
-    assert len(normalized.additionalConditions) == 2
+    lp.normalize()
+    assert len(lp.additionalConditions) == 2
 
-    nAc1 = normalized.additionalConditions[0]
+    nAc1 = lp.additionalConditions[0]
     assertNpEquals(nAc1.coeffs, [-1, 2, -3])
     assert nAc1.operator == Operator.SmallerThan
     assert nAc1.rhs == 10.5
 
-    nAc2 = normalized.additionalConditions[1]
+    nAc2 = lp.additionalConditions[1]
     assertNpEquals(nAc2.coeffs, [1, -2, 3])
     assert nAc2.operator == Operator.SmallerThan
     assert nAc2.rhs == -10.5

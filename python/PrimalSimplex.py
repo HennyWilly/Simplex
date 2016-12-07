@@ -8,7 +8,8 @@ from python.LinearProblem import LinearProblem
 class PrimalSimplex(Simplex):
 
     def __init__(self, linearProblem: LinearProblem):
-        super().__init__(linearProblem.normalize())
+        super().__init__(linearProblem)
+        self.linearProblem.normalize()
         self.initTableau()
 
     def solve(self):

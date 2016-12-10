@@ -27,6 +27,7 @@ class PrimalSimplex(Simplex):
 
         # Generating result
         x = self.getResult()
+        print('x_i = {}'.format(x))
 
         return x, self.tableau[-1, -1]
 
@@ -41,7 +42,7 @@ class PrimalSimplex(Simplex):
             self.tableau[i, 0:numberOfCoeffs] = additionalCondition.coeffs
             self.tableau[i, numberOfCoeffs + i] = 1
             self.tableau[i, -1] = additionalCondition.rhs
-        self.variables = np.array(range(numberOfCoeffs + 1, cols))
+        self.variables = np.array(range(numberOfCoeffs, cols-1))
 
     def checkAbort(self, pivotElement: PivotElement):
         numberOfCoeffs = self.linearProblem.targetFunction.getNumberOfCoeffs()

@@ -30,6 +30,8 @@ class Simplex(metaclass=ABCMeta):
     def calcElements(self, pivot: PivotElement):
         pivotRow = pivot.row
         pivotCol = pivot.col
+
+        print('Switching x_{:d} with x_{:d}'.format(self.variables[pivotRow] + 1, pivotCol + 1))
         self.variables[pivotRow] = pivotCol
 
         # calculate elements in pivot row

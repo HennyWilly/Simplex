@@ -33,7 +33,7 @@ def test_shouldDoSimplex_A1_3():
     simplex = PrimalSimplex(lp)
     (x, F) = simplex.solve()
 
-    assertNpEquals(x, [30, 60, 0, 10, 0])
+    assertNpEquals(x, [30, 60, 10, 0, 0])
     assert F == 1500
 
 

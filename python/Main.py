@@ -3,6 +3,7 @@ import time
 
 import env
 from python.PrimalSimplex import PrimalSimplex
+from python.DualSimplex import DualSimplex
 from python.FileHandle import FileHandle
 
 
@@ -17,14 +18,23 @@ def main():
             for linearProblem in linearProblems:
                 print(linearProblem)
                 # linearProblem.plot()  # Uncomment this line to plot the LP
-                primalSimplex = PrimalSimplex(linearProblem)
+                primalSimplex = PrimalSimplex(linearProblem, None)
+                start = time.perf_counter()
                 if primalSimplex.isSolvable():
-                    start = time.perf_counter()
                     primalSimplex.solve()
-                    timeInSec = time.perf_counter() - start
-                    print("Execution time: {} ms".format(timeInSec * 1000))
                 else:
-                    print('Can not solve LP with the primal simplex algorithm!')
+                    print('Can not solve LP with the primal simplex algorithm!\nTry dual simplex algorithm:')
+                    dualSimplex = DualSimplex(linearProblem)
+                    tableau = dualSimplex.solve()
+                    primalSimplex = PrimalSimplex(linearProblem, tableau)
+                    if primalSimplex.isSolvable():
+                        print('\nStart primal simplex algorithm:')
+                        primalSimplex.solve()
+                    else:
+                        print('Still not solvable with primal algorithm')
+                    
+                timeInSec = time.perf_counter() - start
+                print("Execution time: {} ms".format(timeInSec * 1000))
                 print('')
 
 

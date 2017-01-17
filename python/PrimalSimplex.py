@@ -7,10 +7,13 @@ from python.LinearProblem import LinearProblem
 
 class PrimalSimplex(Simplex):
 
-    def __init__(self, linearProblem: LinearProblem):
+    def __init__(self, linearProblem: LinearProblem, tableau):
         super().__init__(linearProblem)
         self.linearProblem.normalize()
-        self.initTableau()
+        if tableau is None:
+            self.initTableau()
+        else:
+            self.initTableauWithTableau(tableau)
 
     def solve(self):
         self.printTableau()
@@ -43,6 +46,13 @@ class PrimalSimplex(Simplex):
             self.tableau[i, numberOfCoeffs + i] = 1
             self.tableau[i, -1] = additionalCondition.rhs
         self.variables = np.array(range(numberOfCoeffs, cols-1))
+    
+    def initTableauWithTableau(self, tableau):
+        numberOfCoeffs = self.linearProblem.targetFunction.getNumberOfCoeffs()
+        cols = numberOfCoeffs + len(self.linearProblem.additionalConditions) + 1
+        self.variables = np.array(range(numberOfCoeffs, cols-1))
+        self.tableau = tableau
+        
 
     def checkAbort(self, pivotElement: PivotElement):
         numberOfCoeffs = self.linearProblem.targetFunction.getNumberOfCoeffs()
@@ -50,12 +60,13 @@ class PrimalSimplex(Simplex):
         abort = False if len(np.where(self.tableau[-1, 0:numberOfCoeffs] < 0)[0]) > 0 else True
         # abort if the pivot column contains only values <= 0
         if not abort and pivotElement is not None:
-            abort = False if len(np.where(self.tableau[:, pivotElement.col] > 0)[0]) > 0 else True
+            abort = False if len(np.where(self.tableau[:-1, pivotElement.col] > 0)[0]) > 0 else True
         return abort
 
     def findPivotElement(self):
-        numberOfCoeffs = self.linearProblem.targetFunction.getNumberOfCoeffs()
-        col = np.argmin(self.tableau[-1, 0:numberOfCoeffs])
+        # numOfCols = self.linearProblem.targetFunction.getNumberOfCoeffs()
+        numOfCols = self.linearProblem.targetFunction.getNumberOfCoeffs()
+        col = np.argmin(self.tableau[-1, 0:numOfCols])
         indices = np.where(self.tableau[:-1, col] > 0)
         values = self.tableau[indices, -1] / self.tableau[indices, col]
         idxMinVal = np.argmin(values)

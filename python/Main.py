@@ -13,7 +13,7 @@ def main():
     fileHandle = FileHandle(inputDir)
     inputFiles = fileHandle.getInputFiles()
     for file in inputFiles:
-        #if os.path.basename(file) == 'Exercise01.txt':  # TODO: remove this line
+        if os.path.basename(file) == 'Exercise14.txt':  # TODO: remove this line
             linearProblems = FileHandle.parseInputFile(file)
             for linearProblem in linearProblems:
                 print(linearProblem)
